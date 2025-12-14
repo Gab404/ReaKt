@@ -1,27 +1,42 @@
-# ReaKt: Intelligent Bioreactor Autopilot
+# 🧪 ReaKt: Intelligent Bioreactor Autopilot
 
 <div align="center">
+
   <img src="logo.png" alt="ReaKt Logo" width="200"/>
   <br>
   <em>"React Smarter. ReaKt Faster."</em>
+  <br>
+  <br>
+<img src="example.gif" alt="ReaKt Dashboard Demo" width="100%"/>
+  <br><br>
 </div>
 
 ---
 
-## Overview
+## 📖 Overview
 
 **ReaKt** is a next-generation control software designed to optimize industrial fermentation processes. Unlike traditional PID controllers that are reactive, ReaKt uses a **Predictive Closed-Loop** architecture.
 
 It combines a **Deep Learning Digital Twin (LSTM)** to simulate biological dynamics and **Model Predictive Control (MPC)** to optimize inputs in real-time.
 
-### Key Metrics
+### 🚀 Key Metrics
 * **+23% Biomass Production** (Yield Optimization)
 * **-17% Electricity Costs** (Smart Batch Planning)
 * **70% Reduction** in manual supervision
 
+<div align="center">
+  <img src="exampleElectricity.png" alt="ReaKt Architecture Schema" width="800"/>
+  <br>
+</div>
+
 ---
 
-## How It Works
+## ⚙️ How It Works
+
+<div align="center">
+  <img src="schema.png" alt="ReaKt Architecture Schema" width="800"/>
+  <br>
+</div>
 
 ReaKt moves beyond "trial and error" by implementing a dual-engine architecture:
 
@@ -38,7 +53,7 @@ ReaKt moves beyond "trial and error" by implementing a dual-engine architecture:
 
 ---
 
-## Features & Interface
+## 📊 Features & Interface
 
 The project includes a full-stack **Streamlit** dashboard featuring:
 
@@ -49,7 +64,7 @@ The project includes a full-stack **Streamlit** dashboard featuring:
 
 ---
 
-## Dataset & Attribution
+## 📂 Dataset & Attribution
 
 This project was trained and validated using the **IndPenSim** dataset, a benchmark for industrial penicillin fermentation.
 
@@ -75,7 +90,7 @@ We utilized the `100_Batches_IndPenSim_V3.csv` file to train the LSTM model on r
 
 1.  **Clone the repository**
     ```bash
-    git clone [git@github.com:Gab404/ReaKt.git](git@github.com:Gab404/ReaKt.git)
+    git clone git@github.com:Gab404/ReaKt.git
     cd reakt
     ```
 
@@ -93,5 +108,3 @@ We utilized the `100_Batches_IndPenSim_V3.csv` file to train the LSTM model on r
     ```
 
 ---
-
-## 🏗️ Project Structure

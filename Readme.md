@@ -62,7 +62,6 @@ You can train the LSTM on your **own data**.
 </br> 
 It turns out that our algorithm predict quite well the futur biomass and penicilin concentration but still having trouble prediciting high variations.
 </br> 
----
 
 ## Features & Interface
 

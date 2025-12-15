@@ -1,13 +1,12 @@
-# ReaKt: Intelligent Bioreactor Autopilot
-
 <div align="center">
+  <img src="./assets/logo.png" alt="ReaKt Logo" width="300"/>
+  <br>
+  <br>
+</div>
 
-  <img src="logo.png" alt="ReaKt Logo" width="200"/>
-  <br>
-  <em>"React Smarter. ReaKt Faster."</em>
-  <br>
-  <br>
-<img src="example.gif" alt="ReaKt Dashboard Demo" width="100%"/>
+# Smart Bioreactor Autopilot & Simulator
+<div align="center">
+<img src="./assets/example.gif" alt="ReaKt Dashboard Demo" width="100%"/>
   <br><br>
 </div>
 
@@ -15,41 +14,52 @@
 
 ## Overview
 
-**ReaKt** is a next-generation control software designed to optimize industrial fermentation processes. Unlike traditional PID controllers that are reactive, ReaKt uses a **Predictive Closed-Loop** architecture.
+**ReaKt** is a control software designed to optimize and simulate industrial fermentation processes. Unlike traditional PID controllers that are reactive, ReaKt uses a **Predictive Closed-Loop** architecture.
 
 It combines a **Deep Learning Digital Twin (LSTM)** to simulate biological dynamics and **Model Predictive Control (MPC)** to optimize inputs in real-time.
 
-### Key Metrics
-* **+23% Biomass Production** (Yield Optimization)
-* **-17% Electricity Costs** (Smart Batch Planning)
-* **70% Reduction** in manual supervision
-
-<div align="center">
-  <img src="exampleElectricity.png" alt="ReaKt Architecture Schema" width="800"/>
-  <br>
-</div>
+You can train the LSTM on your **own data**.
 
 ---
 
 ## How It Works
 
 <div align="center">
-  <img src="schema.png" alt="ReaKt Architecture Schema" width="800"/>
+  <img src="./assets/schema.png" alt="ReaKt Architecture Schema" width="400"/>
   <br>
 </div>
 
-ReaKt moves beyond "trial and error" by implementing a dual-engine architecture:
+
+</br>
+
+### ReaKt moves beyond "trial and error" by implementing a dual-engine architecture:
 
 1.  **The Digital Twin (LSTM Neural Network):**
     * Trained on historical batch data to learn non-linear biological dynamics.
-    * Predicts Penicillin ($P$) and Biomass ($X$) concentrations hours in advance based on current state and future control inputs.
+    * Predicts Penicillin and Biomass concentrations hours in advance based on current state and future control inputs.
     
 2.  **The Strategist (Model Predictive Control - MPC):**
     * Solves a real-time optimization problem to determine the optimal sequence of control actions (Sugar Feed, Aeration, Temperature, pH).
-    * Balances yield maximization against physical constraints and energy costs.
 
-3.  **Continuous Learning:**
-    * The system analyzes daily data at **11:59 PM** to fine-tune the LSTM weights, adapting to sensor drift or biological mutations automatically.
+---
+
+## Results
+
+<div align="center">
+  <img src="./assets/loss.png" alt="LSTM loss" width="400"/>
+  <br>
+  Here is the training loss for our LSTM on the IndPenSim dataset. 
+</div>
+</br> 
+</br> 
+
+<div align="center">
+  <img src="./assets/predictions.png" alt="LSTM predictions" width="600"/>
+  <br>
+  Here is the LSTM predictions of the biomass, NH3, penicillin concentration our test set. 
+</div>
+
+</br> 
 
 ---
 
@@ -104,7 +114,7 @@ We utilized the `100_Batches_IndPenSim_V3.csv` file to train the LSTM model on r
 
 4.  **Run the App**
     ```bash
-    streamlit run app.py
+    streamlit run main.py
     ```
 
 ---

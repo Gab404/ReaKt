@@ -118,3 +118,12 @@ We utilized the `100_Batches_IndPenSim_V3.csv` file to train the LSTM model on r
     ```
 
 ---
+
+## Authors
+
+#### Gabriel Guiet-Dupré - [Linkedin](**https://www.linkedin.com/in/gabriel-guiet-dupre/**)
+#### Malik Hassane - [Linkedin](**https://www.linkedin.com/in/malik-hassane-595800285/**)
+#### Paul Chevalier - [Linkedin](**https://www.linkedin.com/in/paul-chevalier-917852255/**)
+#### Elias Moussouni - [Linkedin](**https://www.linkedin.com/in/elias-moussouni-075410241/**)
+
+Special thanks to Theo Mathieu and Romain El Andaloussi

@@ -5,6 +5,7 @@
 </div>
 
 # Smart Bioreactor Autopilot & Simulator
+#### (Currently updating the software)
 <div align="center">
 <img src="./assets/example.png" alt="ReaKt Dashboard Demo" width="100%"/>
   <br><br>

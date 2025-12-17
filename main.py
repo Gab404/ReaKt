@@ -24,7 +24,7 @@ def get_arguments():
                         help='Chemin vers le fichier CSV des données')
     
     parser.add_argument('--path-to-model', type=str, 
-                        default='lstm/saved_model',
+                        default='saved_model',
                         help='Dossier contenant le modèle (pt), les scalers (pkl) et les métadonnées (json)')
 
     # parse_known_args est CRUCIAL avec Streamlit pour ne pas planter

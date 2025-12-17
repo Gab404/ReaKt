@@ -1,0 +1,198 @@
+{
+    "input_columns": [
+        "Time (h)",
+        "Aeration rate(Fg:L/h)",
+        "Agitator RPM(RPM:RPM)",
+        "Sugar feed rate(Fs:L/h)",
+        "Acid flow rate(Fa:L/h)",
+        "Base flow rate(Fb:L/h)",
+        "Heating/cooling water flow rate(Fc:L/h)",
+        "Heating water flow rate(Fh:L/h)",
+        "Water for injection/dilution(Fw:L/h)",
+        "pH(pH:pH)",
+        "Temperature(T:K)",
+        "Dissolved oxygen concentration(DO2:mg/L)",
+        "Air head pressure(pressure:bar)",
+        "Vessel Volume(V:L)",
+        "Generated heat(Q:kJ)",
+        "Oxygen Uptake Rate(OUR:(g min^{-1}))",
+        "Carbon evolution rate(CER:g/h)",
+        "Substrate concentration(S:g/L)",
+        "Penicillin concentration(P:g/L)",
+        "Offline Penicillin concentration(P_offline:P(g L^{-1}))",
+        "Offline Biomass concentratio(X_offline:X(g L^{-1}))",
+        "NH_3 concentration off-line(NH3_offline:NH3 (g L^{-1}))"
+    ],
+    "output_columns": [
+        "Penicillin concentration(P:g/L)",
+        "Offline Penicillin concentration(P_offline:P(g L^{-1}))",
+        "Offline Biomass concentratio(X_offline:X(g L^{-1}))",
+        "NH_3 concentration off-line(NH3_offline:NH3 (g L^{-1}))"
+    ],
+    "control_columns": [
+        {
+            "name": "Aeration rate(Fg:L/h)",
+            "min": 20.0,
+            "max": 75.0
+        },
+        {
+            "name": "Sugar feed rate(Fs:L/h)",
+            "min": 2.0,
+            "max": 150.0
+        },
+        {
+            "name": "Acid flow rate(Fa:L/h)",
+            "min": 0.0,
+            "max": 4.6618
+        },
+        {
+            "name": "Base flow rate(Fb:L/h)",
+            "min": 0.0,
+            "max": 225.0
+        },
+        {
+            "name": "Temperature(T:K)",
+            "min": 297.43,
+            "max": 301.11
+        },
+        {
+            "name": "Agitator RPM(RPM:RPM)",
+            "min": 100.0,
+            "max": 100.0
+        }
+    ],
+    "statistics": {
+        "Time (h)": {
+            "min": 1.0,
+            "max": 290.0,
+            "mean": 118.12172647914646,
+            "std": 71.89731493277964
+        },
+        "Aeration rate(Fg:L/h)": {
+            "min": 20.0,
+            "max": 75.0,
+            "mean": 64.43016488845781,
+            "std": 12.20091874078872
+        },
+        "Agitator RPM(RPM:RPM)": {
+            "min": 100.0,
+            "max": 100.0,
+            "mean": 100.0,
+            "std": 0.0
+        },
+        "Sugar feed rate(Fs:L/h)": {
+            "min": 2.0,
+            "max": 150.0,
+            "mean": 77.14403491755577,
+            "std": 30.316607043092436
+        },
+        "Acid flow rate(Fa:L/h)": {
+            "min": 0.0,
+            "max": 4.6618,
+            "mean": 0.1172184529582929,
+            "std": 0.6204078095036698
+        },
+        "Base flow rate(Fb:L/h)": {
+            "min": 0.0,
+            "max": 225.0,
+            "mean": 62.93041122028614,
+            "std": 52.03006564851433
+        },
+        "Heating/cooling water flow rate(Fc:L/h)": {
+            "min": 0.0001,
+            "max": 1496.3,
+            "mean": 79.42272585548011,
+            "std": 115.84104464609237
+        },
+        "Heating water flow rate(Fh:L/h)": {
+            "min": 0.0001,
+            "max": 490.99,
+            "mean": 19.790944074936952,
+            "std": 44.09883569785922
+        },
+        "Water for injection/dilution(Fw:L/h)": {
+            "min": 0.0,
+            "max": 500.0,
+            "mean": 153.12803103782736,
+            "std": 154.99499013644729
+        },
+        "pH(pH:pH)": {
+            "min": 5.4515,
+            "max": 6.7467,
+            "mean": 6.498321726479146,
+            "std": 0.07028056888819134
+        },
+        "Temperature(T:K)": {
+            "min": 297.43,
+            "max": 301.11,
+            "mean": 298.0173278370514,
+            "std": 0.17833666810762336
+        },
+        "Dissolved oxygen concentration(DO2:mg/L)": {
+            "min": 4.0304,
+            "max": 16.139,
+            "mean": 12.490601988360815,
+            "std": 1.6979082406119639
+        },
+        "Air head pressure(pressure:bar)": {
+            "min": 0.6,
+            "max": 1.1,
+            "mean": 0.9290979631425801,
+            "std": 0.1465338193695975
+        },
+        "Vessel Volume(V:L)": {
+            "min": 56550.0,
+            "max": 92671.0,
+            "mean": 72897.26673132881,
+            "std": 8588.127216709818
+        },
+        "Generated heat(Q:kJ)": {
+            "min": 1e-06,
+            "max": 1276.6,
+            "mean": 276.0421207104753,
+            "std": 137.82323970753532
+        },
+        "Oxygen Uptake Rate(OUR:(g min^{-1}))": {
+            "min": -0.1139,
+            "max": 2.407,
+            "mean": 1.2304799214258,
+            "std": 0.5063990228079904
+        },
+        "Carbon evolution rate(CER:g/h)": {
+            "min": 0.03443,
+            "max": 1.9481,
+            "mean": 1.2162445601357905,
+            "std": 0.49826204449908346
+        },
+        "Substrate concentration(S:g/L)": {
+            "min": 0.00017103,
+            "max": 115.27,
+            "mean": 4.760469935824443,
+            "std": 14.57073233081951
+        },
+        "Penicillin concentration(P:g/L)": {
+            "min": 5.5154e-18,
+            "max": 36.183,
+            "mean": 14.514052578278369,
+            "std": 10.255741513790344
+        },
+        "Offline Penicillin concentration(P_offline:P(g L^{-1}))": {
+            "min": 3.6947e-26,
+            "max": 36.18,
+            "mean": 14.43944939772066,
+            "std": 10.260905838435491
+        },
+        "Offline Biomass concentratio(X_offline:X(g L^{-1}))": {
+            "min": 0.39381,
+            "max": 27.882,
+            "mean": 18.79909528128031,
+            "std": 7.016321415408354
+        },
+        "NH_3 concentration off-line(NH3_offline:NH3 (g L^{-1}))": {
+            "min": 1391.6,
+            "max": 5170.0,
+            "mean": 1961.8432589718718,
+            "std": 542.2870611328923
+        }
+    }
+}

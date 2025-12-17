@@ -63,7 +63,7 @@ def main():
     print(f"Batch Size: {args.batch_size}")
     print(f"---------------------")
 
-    print("Chargement et prétraitement des données...")
+    print("Loading and data preprocessing...")
     try:
         loaders, scaler_X, scaler_y, meta = get_dataloaders(
             args.path_to_dataset, 
@@ -82,7 +82,7 @@ def main():
     criterion = nn.MSELoss()
     optimizer = torch.optim.Adam(model.parameters(), lr=LEARNING_RATE)
     
-    print("Début de l'entraînement...")
+    print("Start training...")
     train_losses, val_losses = [], []
     
     for epoch in range(args.epoch):
@@ -94,7 +94,7 @@ def main():
         
         print(f"Epoch {epoch+1}/{args.epoch} | Train Loss: {train_loss:.5f} | Val Loss: {val_loss:.5f}")
 
-    print("\nÉvaluation sur le jeu de test...")
+    print("\nEvaluation on the test dataset...")
     model.eval()
     y_pred, y_true = [], []
     
@@ -118,7 +118,7 @@ def main():
     plt.legend()
     plt.xlabel("Epoch")
     plt.ylabel("MSE")
-    plt.title("Courbe d'apprentissage")
+    plt.title("Training Loss")
     plt.show()
 
     num_points = 300
@@ -133,7 +133,7 @@ def main():
         axes[i].legend()
     
     axes[-1].set_xlabel("Index temporel (test set)")
-    plt.suptitle("Prédictions vs Réel (Test Set)", fontsize=14)
+    plt.suptitle("Predicitions vs Ground Truth (Test Set)", fontsize=14)
     plt.tight_layout()
     plt.show()
 
@@ -150,7 +150,7 @@ def main():
     joblib.dump(scaler_X, os.path.join(args.save_dir, "scaler_X.pkl"))
     joblib.dump(scaler_y, os.path.join(args.save_dir, "scaler_y.pkl"))
     
-    print(f"✅ Modèle et scalers sauvegardés dans '{args.save_dir}'")
+    print(f"Model correctly saved in '{args.save_dir}'")
 
 if __name__ == "__main__":
     main()

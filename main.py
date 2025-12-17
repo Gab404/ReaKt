@@ -8,18 +8,73 @@ import time
 import os
 import json
 import sys
+import argparse  # <--- AJOUTÉ
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 
-# --- IMPORTATION DU MPC ---
-from mpc import BioreactorMPC
-sys.path.append(os.path.join(os.path.dirname(__file__), 'lstm'))
-from model import LSTMModel 
+# ==========================================
+# 0. GESTION DES ARGUMENTS (FLAGS)
+# ==========================================
+def get_arguments():
+    parser = argparse.ArgumentParser(description="Digital Twin Bioreactor")
+    
+    # Définition des flags avec valeurs par défaut (vos chemins actuels)
+    parser.add_argument('--path-to-data', type=str, 
+                        default='100_Batches_IndPenSim_V3.csv',
+                        help='Chemin vers le fichier CSV des données')
+    
+    parser.add_argument('--path-to-model', type=str, 
+                        default='lstm/saved_model',
+                        help='Dossier contenant le modèle (pt), les scalers (pkl) et les métadonnées (json)')
 
+    # parse_known_args est CRUCIAL avec Streamlit pour ne pas planter
+    # sur les arguments internes de Streamlit
+    args, _ = parser.parse_known_args()
+    return args
+
+args = get_arguments()
+
+# ==========================================
+# 1. CONFIGURATION & IMPORTS
+# ==========================================
+st.set_page_config(page_title="Simulateur Bioréacteur MPC", layout="wide")
+
+# Style CSS
+st.markdown("""
+    <style>
+    h1, h2, h3, h4, h5, h6, p, li, span { color: #00FFCC !important; }
+    [data-testid="stMetricValue"], [data-testid="stMetricLabel"] { color: #00FFCC !important; }
+    .stMarkdown, .stText { color: #00FFCC !important; }
+    .css-1d391kg { color: #00FFCC !important; }
+    </style>
+""", unsafe_allow_html=True)
+
+# Import du module MPC
+sys.path.append(os.path.join(os.path.dirname(__file__), 'lstm'))
+
+try:
+    from mpc import BioreactorMPC
+    from model import LSTMModel 
+except ImportError:
+    st.error("Erreur: Impossible d'importer 'mpc' ou 'model'. Vérifiez vos fichiers.")
+    st.stop()
+
+# ==========================================
+# 2. CHARGEMENT DES COMPOSANTS
+# ==========================================
 @st.cache_resource
-def load_components():
-    # ... (chemins et chargement scalers identiques) ...
-    BASE_DIR = "lstm/saved_model"
+def load_components(model_dir):
+    # Utilisation du chemin passé en argument
+    BASE_DIR = model_dir
+    
+    # Fallback si l'utilisateur met un chemin relatif incorrect, on check le courant
+    if not os.path.exists(BASE_DIR):
+        # Tentative de fallback sur le dossier par défaut si l'argument échoue
+        if os.path.exists("lstm/saved_model"):
+            BASE_DIR = "lstm/saved_model"
+        elif os.path.exists("saved_model"):
+            BASE_DIR = "saved_model"
+            
     JSON_PATH = os.path.join(BASE_DIR, "dataset_metadata.json")
     MODEL_PATH = os.path.join(BASE_DIR, "lstm_dynamics.pt")
     SCALER_X_PATH = os.path.join(BASE_DIR, "scaler_X.pkl")
@@ -31,35 +86,42 @@ def load_components():
             metadata = json.load(f)
         input_cols = metadata['input_columns']
         output_cols = metadata['output_columns']
-        # NOUVEAU : Récupération de la config des contrôles
         control_settings = metadata.get('control_columns', []) 
     else:
-        st.error(f"Metadata introuvable : {JSON_PATH}")
+        st.error(f"Metadata introuvable dans : {JSON_PATH}")
         st.stop()
 
-    # 2. Chargement Modèle (inchangé)
+    # 2. Chargement Modèle
+    if not os.path.exists(MODEL_PATH):
+        st.error(f"Modèle introuvable : {MODEL_PATH}")
+        st.stop()
+
     checkpoint = torch.load(MODEL_PATH, map_location=torch.device('cpu'))
+    seq_len = checkpoint.get('sequence_length', 10)
     hidden_size = checkpoint.get('hidden_size', 128)
+    
     model = LSTMModel(len(input_cols), hidden_size, len(output_cols))
     model.load_state_dict(checkpoint['model_state_dict'])
     model.eval()
 
-    # 3. Chargement Scalers (inchangé)
+    # 3. Chargement Scalers
+    if not os.path.exists(SCALER_X_PATH) or not os.path.exists(SCALER_Y_PATH):
+         st.error(f"Scalers introuvables dans : {BASE_DIR}")
+         st.stop()
+         
     scaler_X = joblib.load(SCALER_X_PATH)
     scaler_y = joblib.load(SCALER_Y_PATH)
     
-    # On retourne aussi control_settings
-    return model, scaler_X, scaler_y, input_cols, output_cols, control_settings
+    return model, scaler_X, scaler_y, input_cols, output_cols, control_settings, seq_len
 
-# Chargement
-model, scaler_X, scaler_y, input_cols, output_cols, control_settings = load_components()
+# Chargement avec le chemin du modèle issu des arguments
+model, scaler_X, scaler_y, input_cols, output_cols, control_settings, seq_len = load_components(args.path_to_model)
 
-# --- INITIALISATION DU MPC DYNAMIQUE ---
-# On passe control_settings au constructeur
+# Init MPC
 mpc = BioreactorMPC(model, scaler_X, scaler_y, input_cols, output_cols, control_settings)
 
 # ==========================================
-# 2. MOTEUR 3D (VISUALISATION)
+# 3. MOTEUR 3D (VISUALISATION)
 # ==========================================
 def get_cylinder_mesh(radius, height, z_offset=0, color='blue', opacity=0.8, resolution=12):
     theta = np.linspace(0, 2*np.pi, resolution)
@@ -79,7 +141,6 @@ def render_3d_bioreactor(vol, max_vol, rpm, fg, biomass, step_idx):
     liquid_height = tank_height * fill_ratio
     radius = 3
     
-    # Couleur liquide (Jaune -> Rouge selon Biomasse)
     biomass_norm = min(1.0, max(0.0, biomass / 18.0))
     r = int(255 - (biomass_norm * 116)) 
     g = int(255 - (biomass_norm * 255)) 
@@ -88,7 +149,7 @@ def render_3d_bioreactor(vol, max_vol, rpm, fg, biomass, step_idx):
     
     fig = go.Figure()
 
-    # Cuve (Structure)
+    # Cuve
     theta = np.linspace(0, 2*np.pi, 16)
     xc = radius * np.cos(theta)
     yc = radius * np.sin(theta)
@@ -141,16 +202,27 @@ def render_3d_bioreactor(vol, max_vol, rpm, fg, biomass, step_idx):
     return fig
 
 # ==========================================
-# 3. INTERFACE STREAMLIT
+# 4. INTERFACE STREAMLIT
 # ==========================================
 
-if os.path.exists("logo.png"):
-    st.image("logo.png", width=300)
+# Logo Centré
+if os.path.exists("./assets/logo.png"):
+    col1, col2, col3 = st.columns([1, 1, 1])
+    with col2:
+        st.image("./assets/logo.png", width=300)
+elif os.path.exists("logo.png"):
+    col1, col2, col3 = st.columns([1, 1, 1])
+    with col2:
+        st.image("logo.png", width=300)
 
-st.title("Digital Twin & Contrôle MPC")
+# st.title("Digital Twin & Contrôle MPC")
 
 # Sidebar
-st.sidebar.header("Simulation Parameters")
+st.sidebar.header("Parameters")
+# Affichage des chemins utilisés (pour debug/vérification)
+st.sidebar.caption(f"📂 Model: `{args.path_to_model}`")
+st.sidebar.caption(f"📄 Data: `{args.path_to_data}`")
+
 target_penicillin = st.sidebar.slider("Target Penicilline (g/L)", 0.5, 5.0, 3.5)
 sim_steps = st.sidebar.slider("Duration Simulation (h)", 50, 200, 100)
 replay_speed = st.sidebar.slider("Speed Replay (s)", 0.02, 0.5, 0.1)
@@ -179,7 +251,7 @@ with main_col:
     chart_placeholder = st.empty()
 
 with side_col:
-    st.markdown("### Vue 3D")
+    st.markdown("### 3D View")
     reactor_placeholder = st.empty()
 
 # --- PHASE 1 : CALCUL ---
@@ -187,17 +259,24 @@ if start_btn:
     progress_container.info("MPC is thinking... Initializing physics...")
     progress_bar = progress_container.progress(0)
     
-    data_source_path = 'indpensim-notebook/Mendeley_data/100_Batches_IndPenSim_V3.csv'
+    # Utilisation du chemin des données issu des arguments
+    data_source_path = args.path_to_data
+    
     if not os.path.exists(data_source_path):
-        st.error(f"Données introuvables: {data_source_path}")
-        st.stop()
+        # Tentative de trouver le fichier si le chemin relatif est complexe
+        alt_path = os.path.join('indpensim-notebook', 'Mendeley_data', data_source_path)
+        if os.path.exists(alt_path):
+            data_source_path = alt_path
+        else:
+            st.error(f"Données introuvables: {data_source_path}")
+            st.stop()
 
     data_source = pd.read_csv(data_source_path)
     data_source = data_source.dropna(subset=output_cols).reset_index(drop=True)
     data_source[output_cols] = data_source[output_cols].ffill()
     
-    idx_start = np.random.randint(50, 1000)
-    raw_seq_df = data_source[input_cols].iloc[idx_start : idx_start + seq_length]
+    idx_start = np.random.randint(seq_len + 1, 1000)
+    raw_seq_df = data_source[input_cols].iloc[idx_start - seq_len : idx_start]
     
     movie = []
     # Init history
@@ -214,7 +293,7 @@ if start_btn:
     for step in range(sim_steps):
         progress_bar.progress((step + 1) / sim_steps)
         
-        # 1. Optimisation MPC (Appel au module externe)
+        # 1. Optimisation MPC
         best_controls_scaled = mpc.optimize(current_seq_tensor[0].numpy(), horizon=5, steps=10)
         
         # 2. Mise à jour des Inputs
@@ -263,7 +342,7 @@ if st.session_state['simulation_movie'] is not None:
     
     movie = st.session_state['simulation_movie']
     full_df = pd.DataFrame(movie)
-    start_replay = 30
+    start_replay = max(seq_len, 30)
     
     progress_container.empty()
     
@@ -275,12 +354,12 @@ if st.session_state['simulation_movie'] is not None:
         curr_b = row['Offline Biomass concentratio(X_offline:X(g L^{-1}))']
         curr_vol = row['Vessel Volume(V:L)']
         
-        metric_p.metric("Pénicilline", f"{curr_p:.2f}", delta=f"{curr_p - target_penicillin:.2f}")
-        metric_biomass.metric("Biomasse", f"{curr_b:.2f}")
+        metric_p.metric("Penicilin", f"{curr_p:.2f}", delta=f"{curr_p - target_penicillin:.2f}")
+        metric_biomass.metric("Biomass", f"{curr_b:.2f}")
         metric_v.metric("Volume", f"{curr_vol:.0f} L")
         metric_step.metric("Step", f"{i}")
         
-        # Vue 3D
+        # 3D View
         vis_rpm = row['Agitator RPM(RPM:RPM)']
         vis_fg = row['Aeration rate(Fg:L/h)']
         fig_3d = render_3d_bioreactor(curr_vol, 100000.0, vis_rpm, vis_fg, curr_b, i)
@@ -291,18 +370,18 @@ if st.session_state['simulation_movie'] is not None:
         font_style = dict(color="#00FFCC")
 
         fig = make_subplots(rows=4, cols=1, shared_xaxes=True, vertical_spacing=0.08, row_heights=[0.3, 0.3, 0.2, 0.2],
-                            subplot_titles=("Biologie (P & X)", "Alimentation (Sucre, Air, Acide, Base)", "Température", "Volume"))
+                            subplot_titles=("Biologie (P & X)", "Alimentation (Sugar, O2, Acide, Base)", "Temperature", "Volume"))
         
-        fig.add_trace(go.Scatter(y=plot_df['Penicillin concentration(P:g/L)'], name='Pénicilline', line=dict(color='#2ecc71', width=3)), row=1, col=1)
-        fig.add_trace(go.Scatter(y=plot_df['Offline Biomass concentratio(X_offline:X(g L^{-1}))'], name='Biomasse', line=dict(color='#8e44ad', dash='dot')), row=1, col=1)
+        fig.add_trace(go.Scatter(y=plot_df['Penicillin concentration(P:g/L)'], name='Penicilin', line=dict(color='#2ecc71', width=3)), row=1, col=1)
+        fig.add_trace(go.Scatter(y=plot_df['Offline Biomass concentratio(X_offline:X(g L^{-1}))'], name='Biomass', line=dict(color='#8e44ad', dash='dot')), row=1, col=1)
         fig.add_hline(y=target_penicillin, line_dash="dash", line_color="red", row=1, col=1)
         
-        fig.add_trace(go.Scatter(y=plot_df['Sugar feed rate(Fs:L/h)'], name='Sucre (Fs)', line=dict(color='#e67e22')), row=2, col=1)
-        fig.add_trace(go.Scatter(y=plot_df['Aeration rate(Fg:L/h)'], name='Air (Fg)', line=dict(color='#3498db')), row=2, col=1)
+        fig.add_trace(go.Scatter(y=plot_df['Sugar feed rate(Fs:L/h)'], name='Sugar (Fs)', line=dict(color='#e67e22')), row=2, col=1)
+        fig.add_trace(go.Scatter(y=plot_df['Aeration rate(Fg:L/h)'], name='O2 (Fg)', line=dict(color='#3498db')), row=2, col=1)
         fig.add_trace(go.Scatter(y=plot_df['Acid flow rate(Fa:L/h)'], name='Acide (Fa)', line=dict(color='#e74c3c', dash='dot')), row=2, col=1)
         fig.add_trace(go.Scatter(y=plot_df['Base flow rate(Fb:L/h)'], name='Base (Fb)', line=dict(color='#9b59b6', dash='dot')), row=2, col=1)
         
-        fig.add_trace(go.Scatter(y=plot_df['Temperature(T:K)'], name='Température (K)', line=dict(color='#d35400')), row=3, col=1)
+        fig.add_trace(go.Scatter(y=plot_df['Temperature(T:K)'], name='Temperature (K)', line=dict(color='#d35400')), row=3, col=1)
         fig.add_trace(go.Scatter(y=plot_df['Vessel Volume(V:L)'], name='Volume', line=dict(color='gray')), row=4, col=1)
         
         fig.update_layout(height=800, margin=dict(t=20, b=20, l=10, r=10), showlegend=True,
@@ -312,4 +391,4 @@ if st.session_state['simulation_movie'] is not None:
         chart_placeholder.plotly_chart(fig, use_container_width=True)
         time.sleep(replay_speed)
         
-    st.success("Fin de la simulation.")
+    st.success("End of the simulation.")

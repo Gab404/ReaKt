@@ -6,7 +6,7 @@
 
 # Smart Bioreactor Autopilot & Simulator
 <div align="center">
-<img src="./assets/example.gif" alt="ReaKt Dashboard Demo" width="100%"/>
+<img src="./assets/example.png" alt="ReaKt Dashboard Demo" width="100%"/>
   <br><br>
 </div>
 
@@ -58,10 +58,10 @@ You can train the LSTM on your **own data**.
   <br>
   Here is the LSTM predictions of the biomass, NH3, penicillin concentration our test set. 
 </div>
-
 </br> 
-
----
+</br> 
+It turns out that our algorithm predict quite well the futur biomass and penicilin concentration but still having trouble prediciting high variations.
+</br> 
 
 ## Features & Interface
 
@@ -91,7 +91,7 @@ We utilized the `100_Batches_IndPenSim_V3.csv` file to train the LSTM model on r
 ## Installation
 
 ### Prerequisites
-* Python 3.8+
+This project has been built with Python 3.9
 * PyTorch
 * Streamlit
 * Plotly
@@ -110,11 +110,27 @@ We utilized the `100_Batches_IndPenSim_V3.csv` file to train the LSTM model on r
     ```
 
 3.  **Download the Data**
-    Download the dataset from [Mendeley Data](https://data.mendeley.com/datasets/npt257bjxn/1) and place `100_Batches_IndPenSim_V3.csv` in the `data/` folder.
+    Download the dataset from [Mendeley Data](https://data.mendeley.com/datasets/npt257bjxn/1) or use your own dataset.
 
-4.  **Run the App**
+4.  **Train the predictive model**
+    </br>• Update `PROCESS_COL` and `OUTPUT_COLS` for your own dataset columns.
+    </br>• Train the predictive model LSTM on your own data. 
     ```bash
-    streamlit run main.py
+    python ./lstm/train.py --path-to-dataset "./path/to/data.csv" --save-dir "./path/to/saved_model"
+    ```
+
+5.  **Run the App**
+    ```bash
+    streamlit run main.py -- --path-to-data "./path/to/data.csv" --path-to-model "./path/to/saved_model"
     ```
 
 ---
+
+## Authors
+
+#### Gabriel Guiet-Dupré - [Linkedin](https://www.linkedin.com/in/gabriel-guiet-dupre/)
+#### Malik Hassane - [Linkedin](https://www.linkedin.com/in/malik-hassane-595800285/)
+#### Paul Chevalier - [Linkedin](https://www.linkedin.com/in/paul-chevalier-917852255/)
+#### Elias Moussouni - [Linkedin](https://www.linkedin.com/in/elias-moussouni-075410241/)
+
+Special thanks to Theo Mathieu and Romain El Andaloussi

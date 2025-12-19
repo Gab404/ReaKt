@@ -152,5 +152,7 @@ def main():
     
     print(f"Model correctly saved in '{args.save_dir}'")
 
+    torch.save(loaders['test'].dataset, os.path.join(args.save_dir, "test_set.pt"))
+
 if __name__ == "__main__":
     main()

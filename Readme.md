@@ -80,7 +80,6 @@ This project was trained and validated using the **IndPenSim** dataset, a benchm
 
 **Source:**
 > Goldrick, Stephen (2019), “100 Batches of IndPenSim V3”, Mendeley Data, V1.  
-> **DOI:** [10.17632/npt257bjxn.1](https://data.mendeley.com/datasets/npt257bjxn/1)
 
 We used the `100_Batches_IndPenSim_V3.csv` file to train the LSTM model on realistic industrial variables including:
 * *Outputs:* Penicillin off-line concentration, Biomass off-line concentration.

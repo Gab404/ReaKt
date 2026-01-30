@@ -130,4 +130,6 @@ This project has been built with Python 3.9
 #### Paul Chevalier - [Linkedin](https://www.linkedin.com/in/paul-chevalier-917852255/)
 #### Elias Moussouni - [Linkedin](https://www.linkedin.com/in/elias-moussouni-075410241/)
 
+#### Stephen Goldrick - For the simulator (s.goldrick@ucl.ac.uk)
+
 Special thanks to Theo Mathieu and Romain El Andaloussi

@@ -24,9 +24,8 @@ PROCESS_COLS = [
 OUTPUT_COLS = [
     'Penicillin concentration(P:g/L)',
     'Offline Penicillin concentration(P_offline:P(g L^{-1}))',
-    'Offline Biomass concentratio(X_offline:X(g L^{-1}))',
-    'NH_3 concentration off-line(NH3_offline:NH3 (g L^{-1}))'
-]
+    'Offline Biomass concentratio(X_offline:X(g L^{-1}))'
+    ]
 
 # --- NOUVEAU : Liste des paramètres que le MPC a le droit de modifier ---
 CONTROL_COLS = [
@@ -35,7 +34,12 @@ CONTROL_COLS = [
     'Acid flow rate(Fa:L/h)',
     'Base flow rate(Fb:L/h)',
     'Temperature(T:K)',
-    'Agitator RPM(RPM:RPM)' # Ajouté pour l'exemple
+    'Agitator RPM(RPM:RPM)',
+    'Oil flow(Foil:L/hr)',
+    'PAA flow(Fpaa:PAA flow (L/h))',
+    'Heating/cooling water flow rate(Fc:L/h)',
+    'Heating water flow rate(Fh:L/h)',
+    'Water for injection/dilution(Fw:L/h)'
 ]
 
 # ... (La classe BioreactorDataset reste inchangée) ...

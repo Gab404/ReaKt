@@ -91,7 +91,6 @@ We used the `100_Batches_IndPenSim_V3.csv` file to train the LSTM model on reali
 ### Prerequisites
 This project has been built with Python 3.9
 * PyTorch
-* Streamlit
 * Plotly
 
 ### Setup
@@ -111,15 +110,15 @@ This project has been built with Python 3.9
     Download the dataset from [Mendeley Data](https://data.mendeley.com/datasets/npt257bjxn/1) or use your own dataset.
 
 4.  **Train the predictive model**
-    </br>• Update `PROCESS_COL` and `OUTPUT_COLS` for your own dataset columns.
+    </br>• Update `PROCESS_COL`, `OUTPUT_COLS` and `CONTROL_COLS` for your own dataset columns.
     </br>• Train the predictive model LSTM on your own data. 
     ```bash
-    python ./lstm/train.py --path-to-dataset "./path/to/data.csv" --save-dir "./path/to/saved_model"
+    python ./lstm/train.py --path-to-dataset "./path/to/data.csv" --model-dir "./saved_model" --epoch 20 --batch-size 32
     ```
 
-5.  **Run the App**
+5.  **Run the Simulator**
     ```bash
-    streamlit run main.py -- --path-to-data "./path/to/data.csv" --path-to-model "./path/to/saved_model"
+    python ./simulator/sim.py --model-dir "./saved_model"
     ```
 
 ---

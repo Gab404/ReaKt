@@ -20,7 +20,7 @@ def parse_arguments():
     parser.add_argument('--path-to-dataset', type=str, default=DEFAULT_DATA_PATH, 
                         help='Chemin vers le fichier CSV de données')
     
-    parser.add_argument('--save-dir', type=str, default='saved_model', 
+    parser.add_argument('--model-dir', type=str, default='saved_model', 
                         help='Dossier où sauvegarder le modèle et les scalers')
     
     parser.add_argument('--epoch', type=int, default=20, 

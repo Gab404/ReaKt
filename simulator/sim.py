@@ -25,6 +25,7 @@ IndPenSim_V2.01 Main file (Converted to Python & Updated for AI Twin Experiment)
 import numpy as np
 import pickle
 import matplotlib.pyplot as plt
+import argparse  # ### AJOUT 1 : Import de argparse ###
 
 # Import des modules nécessaires
 from indpensim_run import indpensim_run
@@ -32,6 +33,19 @@ from generate_batch_records import generate_batch_records
 from IndPenSim_QbD_Figure_properties import get_figure_properties
 
 def main():
+    # ### AJOUT 2 : Configuration du parser d'arguments ###
+    parser = argparse.ArgumentParser(description="Simulation IndPenSim avec sélection du dossier de modèle.")
+    
+    # On définit l'argument --model-dir
+    # 'default' permet d'avoir une valeur par défaut si l'utilisateur ne précise rien
+    parser.add_argument('--model-dir', 
+                        type=str, 
+                        default='./saved_model', 
+                        help='Chemin vers le dossier contenant les modèles à charger')
+    
+    # On récupère les arguments
+    args = parser.parse_args()
+
     # --- Configuration flags ---
     data_generation_flag = 2  # 2 - Generate Fixed number of batches
     operational_days = 336

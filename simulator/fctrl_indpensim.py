@@ -2,6 +2,18 @@ import numpy as np
 from scipy.interpolate import interp1d
 from PIDSimple3 import pid_simple_3
 
+import sys
+import os
+
+# Ajoute le dossier courant (.)
+sys.path.append(os.getcwd())
+
+# Ajoute le dossier parent (..)
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), './simulator')))
+
+# Maintenant vous pouvez importer vos modules
+# import mon_module_parent
+
 # --- IMPORT CONDITIONNEL DU CONTRÔLEUR IA ---
 try:
     from ai_controller import AIController

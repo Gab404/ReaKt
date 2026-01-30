@@ -11,7 +11,7 @@ class AIController:
     _instance = None
     
     @classmethod
-    def get_instance(cls, model_dir='saved_model'):
+    def get_instance(cls, model_dir='./saved_model'):
         if cls._instance is None:
             cls._instance = cls(model_dir)
         return cls._instance

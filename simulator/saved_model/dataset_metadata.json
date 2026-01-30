@@ -20,14 +20,12 @@
         "Substrate concentration(S:g/L)",
         "Penicillin concentration(P:g/L)",
         "Offline Penicillin concentration(P_offline:P(g L^{-1}))",
-        "Offline Biomass concentratio(X_offline:X(g L^{-1}))",
-        "NH_3 concentration off-line(NH3_offline:NH3 (g L^{-1}))"
+        "Offline Biomass concentratio(X_offline:X(g L^{-1}))"
     ],
     "output_columns": [
         "Penicillin concentration(P:g/L)",
         "Offline Penicillin concentration(P_offline:P(g L^{-1}))",
-        "Offline Biomass concentratio(X_offline:X(g L^{-1}))",
-        "NH_3 concentration off-line(NH3_offline:NH3 (g L^{-1}))"
+        "Offline Biomass concentratio(X_offline:X(g L^{-1}))"
     ],
     "control_columns": [
         {
@@ -59,6 +57,21 @@
             "name": "Agitator RPM(RPM:RPM)",
             "min": 100.0,
             "max": 100.0
+        },
+        {
+            "name": "Heating/cooling water flow rate(Fc:L/h)",
+            "min": 0.0001,
+            "max": 1496.3
+        },
+        {
+            "name": "Heating water flow rate(Fh:L/h)",
+            "min": 0.0001,
+            "max": 490.99
+        },
+        {
+            "name": "Water for injection/dilution(Fw:L/h)",
+            "min": 0.0,
+            "max": 500.0
         }
     ],
     "statistics": {
@@ -187,12 +200,6 @@
             "max": 27.882,
             "mean": 18.79909528128031,
             "std": 7.016321415408354
-        },
-        "NH_3 concentration off-line(NH3_offline:NH3 (g L^{-1}))": {
-            "min": 1391.6,
-            "max": 5170.0,
-            "mean": 1961.8432589718718,
-            "std": 542.2870611328923
         }
     }
 }

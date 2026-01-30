@@ -43,7 +43,7 @@ def indpensim_run(Batch_no, Batch_run_flags):
     
     # Initialisation des Flags
     Ctrl_flags = {}
-    Ctrl_flags['SBC'] = 0
+    Ctrl_flags['SBC'] = Batch_run_flags['Control_strategy'][Batch_no - 1]
     # Note: Accès aux tableaux numpy ou listes python
     Ctrl_flags['PRBS'] = Batch_run_flags['Control_strategy'][Batch_no - 1] # -1 car Python indexe à 0
     Ctrl_flags['Fixed_Batch_length'] = Batch_run_flags['Batch_length'][Batch_no - 1]

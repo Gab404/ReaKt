@@ -5,7 +5,8 @@ import json
 import numpy as np
 import pandas as pd
 from lstm.model import LSTMModel
-from mpc import BioreactorMPC
+from MPC import BioreactorMPC
+
 
 class AIController:
     _instance = None

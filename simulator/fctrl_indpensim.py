@@ -16,7 +16,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), './simul
 
 # --- IMPORT CONDITIONNEL DU CONTRÔLEUR IA ---
 try:
-    from ai_controller import AIController
+    from simulator.ai_controller import AIController
 except ImportError:
     print("[WARNING] 'ai_controller.py' non trouvé. Le mode IA sera désactivé.")
     AIController = None

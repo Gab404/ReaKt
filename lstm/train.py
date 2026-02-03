@@ -58,7 +58,7 @@ def main():
     
     print(f"--- Configuration ---")
     print(f"Dataset   : {args.path_to_dataset}")
-    print(f"Save Dir  : {args.save_dir}")
+    print(f"Save Dir  : {args.model_dir}")
     print(f"Epochs    : {args.epoch}")
     print(f"Batch Size: {args.batch_size}")
     print(f"---------------------")
@@ -67,7 +67,7 @@ def main():
     try:
         loaders, scaler_X, scaler_y, meta = get_dataloaders(
             args.path_to_dataset, 
-            args.save_dir,
+            args.model_dir,
             SEQUENCE_LENGTH, 
             args.batch_size
         )
@@ -137,7 +137,7 @@ def main():
     plt.tight_layout()
     plt.show()
 
-    os.makedirs(args.save_dir, exist_ok=True)
+    os.makedirs(args.model_dir, exist_ok=True)
     
     torch.save({
         "model_state_dict": model.state_dict(),
@@ -145,14 +145,14 @@ def main():
         "output_cols": meta['output_cols'],
         "sequence_length": SEQUENCE_LENGTH,
         "hidden_size": HIDDEN_SIZE
-    }, os.path.join(args.save_dir, "lstm_dynamics.pt"))
+    }, os.path.join(args.model_dir, "lstm_dynamics.pt"))
     
-    joblib.dump(scaler_X, os.path.join(args.save_dir, "scaler_X.pkl"))
-    joblib.dump(scaler_y, os.path.join(args.save_dir, "scaler_y.pkl"))
+    joblib.dump(scaler_X, os.path.join(args.model_dir, "scaler_X.pkl"))
+    joblib.dump(scaler_y, os.path.join(args.model_dir, "scaler_y.pkl"))
     
-    print(f"Model correctly saved in '{args.save_dir}'")
+    print(f"Model correctly saved in '{args.model_dir}'")
 
-    torch.save(loaders['test'].dataset, os.path.join(args.save_dir, "test_set.pt"))
+    torch.save(loaders['test'].dataset, os.path.join(args.model_dir, "test_set.pt"))
 
 if __name__ == "__main__":
     main()

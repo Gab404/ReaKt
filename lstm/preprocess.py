@@ -9,7 +9,7 @@ from sklearn.preprocessing import StandardScaler
 # --- CONFIGURATION DES COLONNES ---
 # Toutes les entrées
 PROCESS_COLS = [
-    'Time (h)', 'Aeration rate(Fg:L/h)', 'Agitator RPM(RPM:RPM)',
+    'Time (h)', 'Aeration rate(Fg:L/h)',
     'Sugar feed rate(Fs:L/h)', 'Acid flow rate(Fa:L/h)',
     'Base flow rate(Fb:L/h)', 'Heating/cooling water flow rate(Fc:L/h)',
     'Heating water flow rate(Fh:L/h)', 'Water for injection/dilution(Fw:L/h)',
@@ -34,7 +34,6 @@ CONTROL_COLS = [
     'Acid flow rate(Fa:L/h)',
     'Base flow rate(Fb:L/h)',
     'Temperature(T:K)',
-    'Agitator RPM(RPM:RPM)',
     'Oil flow(Foil:L/hr)',
     'PAA flow(Fpaa:PAA flow (L/h))',
     'Heating/cooling water flow rate(Fc:L/h)',

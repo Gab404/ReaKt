@@ -132,4 +132,4 @@ This project has been built with Python 3.9
 
 #### Stephen Goldrick - For the simulator (s.goldrick@ucl.ac.uk)
 
-Special thanks to Theo Mathieu and Romain El Andaloussi
+Special thanks to Theo Mathieu and Romain El Andaloussi.

@@ -129,7 +129,6 @@ This project has been built with Python 3.9
 #### Malik Hassane - [Linkedin](https://www.linkedin.com/in/malik-hassane-595800285/)
 #### Paul Chevalier - [Linkedin](https://www.linkedin.com/in/paul-chevalier-917852255/)
 #### Elias Moussouni - [Linkedin](https://www.linkedin.com/in/elias-moussouni-075410241/)
-#### Ziyad AMZIL - Manager and Goat of this team
 
 #### Stephen Goldrick - For the simulator (s.goldrick@ucl.ac.uk)
 

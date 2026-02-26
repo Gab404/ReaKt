@@ -67,7 +67,7 @@ It turns out that our algorithm predict quite well the futur biomass and penicil
 
 The project includes a full-stack **Streamlit** dashboard featuring:
 
-* **3D Digital Twin Visualization:** A real-time, animated 3D bioreactor (Plotly) showing volume, agitation speed (RPM), aeration bubbles, and liquid color change based on biomass concentration.
+* **3D Digital Twin Visualization:** A real-time, animated 3D bioreactor (Plotly) showing volume, agitation speed (RPM), aeration bubbles, and liquid color change based on biomass concentration. 
 * **Real-time Monitoring:** Live tracking of Key Performance Indicators (Penicillin, Biomass, Volume).
 * **Interactive Replay:** A "DVR" mode to replay previous batches and analyze the MPC's decision-making process.
 * **Process Charts:** Live plotting of control variables (Sugar, Air, Acid, Base) vs. Biological outputs.
